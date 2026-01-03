@@ -273,7 +273,8 @@
                 <thead>
                     <tr>
                         <th style="width: 120px;">Variable</th>
-                        <th style="width: 100px;">Table</th>
+                        <th style="width: 80px;">Table Code</th>
+                        <th style="width: 200px;">Table Name</th>
                         <th>Description</th>
                         <th style="width: 140px;">Category</th>
                         <th style="width: 60px;">Copy</th>
@@ -464,15 +465,20 @@
                 return;
             }
             
-            tbody.innerHTML = limited.map(v => `
+            tbody.innerHTML = limited.map(v => {
+                // Replace !! separators with pipe for readability
+                const cleanLabel = v.label.replace(/!!/g, ' | ');
+                return `
                 <tr>
                     <td><span class="var-code">${v.code}</span></td>
                     <td>${v.table}</td>
-                    <td>${v.label}</td>
+                    <td>${v.tableLabel}</td>
+                    <td>${cleanLabel}</td>
                     <td><span class="category-badge">${v.category || 'Other'}</span></td>
                     <td><button class="copy-btn" onclick="copyCode('${v.code}')">Copy</button></td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
         
         // Copy variable code to clipboard
