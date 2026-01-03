@@ -46,6 +46,42 @@
             margin: 2rem auto;
             padding: 0 1rem;
         }
+        .dataset-container {
+            background: #1a5276;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        .dataset-container label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .dataset-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .dataset-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        .dataset-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .dataset-status {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
         .search-container {
             background: white;
             border-radius: 8px;
@@ -172,6 +208,41 @@
     </nav>
     
     <main>
+        <div class="dataset-container">
+            <div class="dataset-row">
+                <div class="dataset-group">
+                    <label for="year">Year</label>
+                    <select id="year">
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                    </select>
+                </div>
+                <div class="dataset-group">
+                    <label for="survey">ACS Version</label>
+                    <select id="survey">
+                        <option value="acs5">5-Year Estimates</option>
+                        <option value="acs1">1-Year Estimates</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dataset-status" id="dataset-status">
+                Loading dataset...
+            </div>
+        </div>
+        
         <div class="search-container">
             <div class="search-row">
                 <div class="search-group wide">
@@ -222,28 +293,17 @@
 
     <script>
         // =====================================================================
-        // CONFIGURATION - Change these settings to switch between local/hosted
+        // CONFIGURATION
         // =====================================================================
         const CONFIG = {
-            // Set to 'local' for local file access, 'hosted' for Dropbox/web hosting
             mode: 'local',
-            
-            // Local path (relative to this HTML file)
             localPath: 'lookups/',
-            
-            // Hosted path (full URL to your Dropbox or web host folder)
-            // For Dropbox: use dl.dropboxusercontent.com links
-            // Example: 'https://dl.dropboxusercontent.com/s/abc123xyz/'
-            hostedPath: 'https://www.dropbox.com/scl/fo/YOUR_FOLDER_ID/lookups/',
-            
-            // Lookup filename
-            lookupFile: 'acs_variable_lookup_2023_acs5.json'
+            hostedPath: '',
         };
         
-        // Build the full URL based on configuration
-        function getLookupUrl() {
+        function getLookupUrl(year, survey) {
             const basePath = CONFIG.mode === 'hosted' ? CONFIG.hostedPath : CONFIG.localPath;
-            return basePath + CONFIG.lookupFile;
+            return `${basePath}acs_variable_lookup_${year}_${survey}.json`;
         }
         // =====================================================================
         
@@ -253,8 +313,27 @@
         
         // Load the lookup JSON file
         async function loadData() {
+            const year = document.getElementById('year').value;
+            const survey = document.getElementById('survey').value;
+            const surveyLabel = survey === 'acs5' ? '5-Year' : '1-Year';
+            
+            // Reset state
+            allVariables = [];
+            categories = [];
+            tables = {};
+            
+            // Reset dropdowns
+            document.getElementById('category').innerHTML = '<option value="">All Categories</option>';
+            document.getElementById('table').innerHTML = '<option value="">All Tables</option>';
+            document.getElementById('search').value = '';
+            
+            // Show loading state
+            document.getElementById('dataset-status').textContent = `Loading ${year} ACS ${surveyLabel} Estimates...`;
+            document.getElementById('results-body').innerHTML = '<tr><td colspan="5" class="loading">Loading variables...</td></tr>';
+            document.getElementById('results-count').textContent = 'Loading variables...';
+            
             try {
-                const url = getLookupUrl();
+                const url = getLookupUrl(year, survey);
                 console.log('Loading lookup file from:', url);
                 
                 const response = await fetch(url);
@@ -269,7 +348,6 @@
                 tables = data.tables || {};
                 
                 // Flatten variables into searchable array
-                allVariables = [];
                 const variablesData = data.variables || {};
                 
                 for (const tableCode in variablesData) {
@@ -307,34 +385,25 @@
                     categorySelect.appendChild(option);
                 });
                 
+                // Update status
+                document.getElementById('dataset-status').textContent = 
+                    `Loaded: ${year} ACS ${surveyLabel} Estimates — ${allVariables.length.toLocaleString()} variables available`;
+                
                 // Initial display
                 filterResults();
                 
             } catch (error) {
                 console.error('Error loading lookup file:', error);
                 
-                let errorMessage = `
+                document.getElementById('dataset-status').textContent = 
+                    `Error: Could not load ${year} ACS ${surveyLabel} data`;
+                
+                document.getElementById('results-body').innerHTML = `
                     <tr><td colspan="5" class="no-results">
-                        <strong>Could not load variable data.</strong><br><br>
-                        <code>${error.message}</code><br><br>`;
-                
-                if (CONFIG.mode === 'local') {
-                    errorMessage += `
-                        <strong>Local mode tips:</strong><br>
-                        • Make sure <code>lookups/${CONFIG.lookupFile}</code> exists<br>
-                        • If opening directly in browser, try using a local web server<br>
-                        • Or switch to hosted mode in the CONFIG section`;
-                } else {
-                    errorMessage += `
-                        <strong>Hosted mode tips:</strong><br>
-                        • Check that the hostedPath URL is correct in CONFIG<br>
-                        • For Dropbox, use <code>dl.dropboxusercontent.com</code> links<br>
-                        • Make sure the file is publicly accessible`;
-                }
-                
-                errorMessage += `</td></tr>`;
-                
-                document.getElementById('results-body').innerHTML = errorMessage;
+                        <strong>Could not load variable data for ${year} ACS ${surveyLabel}.</strong><br><br>
+                        This dataset may not be available. Try a different year or ACS version.<br><br>
+                        <code>${error.message}</code>
+                    </td></tr>`;
                 document.getElementById('results-count').textContent = 'Error loading data';
             }
         }
@@ -384,8 +453,8 @@
             const limited = filtered.slice(0, displayLimit);
             
             const countText = filtered.length > displayLimit 
-                ? `Showing ${displayLimit} of ${filtered.length} variables (refine search to see more)`
-                : `Showing ${filtered.length} variables`;
+                ? `Showing ${displayLimit} of ${filtered.length.toLocaleString()} variables (refine search to see more)`
+                : `Showing ${filtered.length.toLocaleString()} variables`;
             document.getElementById('results-count').textContent = countText;
             
             const tbody = document.getElementById('results-body');
@@ -421,6 +490,10 @@
             filterResults();
         });
         document.getElementById('table').addEventListener('change', filterResults);
+        
+        // Dataset selectors - reload data when changed
+        document.getElementById('year').addEventListener('change', loadData);
+        document.getElementById('survey').addEventListener('change', loadData);
         
         // Load data on page load
         loadData();
