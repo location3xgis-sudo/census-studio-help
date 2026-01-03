@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Census Studio for ArcGIS Pro - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .hero {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .hero h2 {
+            color: #1a5276;
+            margin-bottom: 1rem;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            color: #1a5276;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .card a:hover {
+            text-decoration: underline;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #1a5276;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #2980b9;
+        }
+        
+        .tool-list {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tool-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+        
+        .tool-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tool-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .tool-category {
+            background: #e8f4f8;
+            color: #1a5276;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-right: 1rem;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .tool-name {
+            font-weight: 600;
+            color: #333;
+            min-width: 200px;
+        }
+        
+        .tool-name a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        
+        .tool-name a:hover {
+            text-decoration: underline;
+        }
+        
+        .tool-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        footer a {
+            color: #7fb3d5;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .tool-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .tool-category {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Census Studio</h1>
+        <p>ArcGIS Pro Toolbox for American Community Survey Data</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="tools.html">Tool Reference</a></li>
+            <li><a href="census-guide.html">Census Data Guide</a></li>
+            <li><a href="variable-lookup.html">Variable Lookup</a></li>
+            <li><a href="tutorials.html">Tutorials</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <div class="hero">
+            <h2>Welcome to Census Studio</h2>
+            <p>Census Studio is a comprehensive ArcGIS Pro toolbox that simplifies working with American Community Survey (ACS) data. Download Census data, join it to your own features, analyze patterns, and create professional reports—all within ArcGIS Pro.</p>
+        </div>
+        
+        <h2 class="section-title">Quick Links</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>🚀 Getting Started</h3>
+                <p>Install R, configure your Census API key, and run your first download in minutes.</p>
+                <a href="getting-started.html">Setup Guide →</a>
+            </div>
+            
+            <div class="card">
+                <h3>🔍 Variable Lookup</h3>
+                <p>Search thousands of ACS variables by keyword or browse by topic to find exactly what you need.</p>
+                <a href="variable-lookup.html">Search Variables →</a>
+            </div>
+            
+            <div class="card">
+                <h3>📊 Census Data Guide</h3>
+                <p>Learn about ACS tables, margins of error, geography levels, and best practices.</p>
+                <a href="census-guide.html">Learn More →</a>
+            </div>
+            
+            <div class="card">
+                <h3>📖 Tutorials</h3>
+                <p>Step-by-step workflows for common tasks like demographic profiles and hot spot analysis.</p>
+                <a href="tutorials.html">View Tutorials →</a>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Tools Overview</h2>
+        <div class="tool-list">
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools/download-acs-data.html">Download ACS Census Data</a></span>
+                <span class="tool-desc">Download ACS data with geometry using the tidycensus R library</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools/compare-time-periods.html">Compare Time Periods</a></span>
+                <span class="tool-desc">Compare a variable across two years with statistical significance testing</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools/join-acs-data.html">Join ACS Data to Features</a></span>
+                <span class="tool-desc">Assign Census demographics to your own polygon features</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Data Enrichment</span>
+                <span class="tool-name"><a href="tools/normalize-data.html">Normalize Data</a></span>
+                <span class="tool-desc">Calculate percentages, per capita rates, with proper MOE propagation</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Data Enrichment</span>
+                <span class="tool-name"><a href="tools/moe-reliability.html">MOE Reliability Filter</a></span>
+                <span class="tool-desc">Calculate coefficient of variation and flag unreliable estimates</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Analysis</span>
+                <span class="tool-name"><a href="tools/demographic-profile.html">Demographic Profile Report</a></span>
+                <span class="tool-desc">Compare a study area to county, state, and national averages</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Analysis</span>
+                <span class="tool-name"><a href="tools/hot-spot-analysis.html">Hot Spot Analysis</a></span>
+                <span class="tool-desc">Identify statistically significant clusters with MOE adjustment</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Configuration</span>
+                <span class="tool-name"><a href="tools/generate-lookup.html">Generate Variable Lookup</a></span>
+                <span class="tool-desc">Build the JSON lookup file for the variable browser</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Configuration</span>
+                <span class="tool-name"><a href="tools/set-api-key.html">Set Census API Key</a></span>
+                <span class="tool-desc">Store your Census API key for automatic use</span>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Census Studio for ArcGIS Pro</p>
+        <p>Developed by <a href="#">Geospatial Training Services</a></p>
+    </footer>
+</body>
+</html>

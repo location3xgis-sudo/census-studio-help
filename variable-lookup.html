@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variable Lookup - Census Studio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        header p { opacity: 0.9; }
+        nav {
+            background: #2c3e50;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        nav a:hover { background: rgba(255,255,255,0.1); }
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .search-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .search-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .search-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .search-group.wide { flex: 2; }
+        .search-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1a5276;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2980b9;
+        }
+        .results-info {
+            background: #e8f4f8;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .results-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #1a5276;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        tr:hover { background: #f8f9fa; }
+        .var-code {
+            font-family: 'Consolas', monospace;
+            background: #e8f4f8;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #1a5276;
+            white-space: nowrap;
+        }
+        .category-badge {
+            background: #6c757d;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .copy-btn:hover { background: #218838; }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        footer a { color: #7fb3d5; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ACS Variable Lookup</h1>
+        <p>Search and browse American Community Survey variables</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="tools.html">Tool Reference</a></li>
+            <li><a href="census-guide.html">Census Data Guide</a></li>
+            <li><a href="variable-lookup.html">Variable Lookup</a></li>
+            <li><a href="tutorials.html">Tutorials</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <div class="search-container">
+            <div class="search-row">
+                <div class="search-group wide">
+                    <label for="search">Search Variables</label>
+                    <input type="text" id="search" placeholder="Enter keywords (e.g., income, poverty, bachelor)">
+                </div>
+                <div class="search-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <label for="table">Table</label>
+                    <select id="table">
+                        <option value="">All Tables</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-info">
+            <span id="results-count">Loading variables...</span>
+        </div>
+        
+        <div class="results-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 120px;">Variable</th>
+                        <th style="width: 100px;">Table</th>
+                        <th>Description</th>
+                        <th style="width: 140px;">Category</th>
+                        <th style="width: 60px;">Copy</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <tr><td colspan="5" class="loading">Loading variables...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Census Studio for ArcGIS Pro | <a href="index.html">Back to Home</a></p>
+        <p style="margin-top: 0.5rem; opacity: 0.7;">Data source: U.S. Census Bureau American Community Survey</p>
+    </footer>
+
+    <script>
+        // =====================================================================
+        // CONFIGURATION - Change these settings to switch between local/hosted
+        // =====================================================================
+        const CONFIG = {
+            // Set to 'local' for local file access, 'hosted' for Dropbox/web hosting
+            mode: 'hosted',
+            
+            // Local path (relative to this HTML file)
+            localPath: 'lookups/',
+            
+            // Hosted path (full URL to your Dropbox or web host folder)
+            // For Dropbox: use dl.dropboxusercontent.com links
+            // Example: 'https://dl.dropboxusercontent.com/s/abc123xyz/'
+            hostedPath: 'https://www.dropbox.com/scl/fo/YOUR_FOLDER_ID/lookups/',
+            
+            // Lookup filename
+            lookupFile: 'acs_variable_lookup_2023_acs5.json'
+        };
+        
+        // Build the full URL based on configuration
+        function getLookupUrl() {
+            const basePath = CONFIG.mode === 'hosted' ? CONFIG.hostedPath : CONFIG.localPath;
+            return basePath + CONFIG.lookupFile;
+        }
+        // =====================================================================
+        
+        let allVariables = [];
+        let categories = [];
+        let tables = {};
+        
+        // Load the lookup JSON file
+        async function loadData() {
+            try {
+                const url = getLookupUrl();
+                console.log('Loading lookup file from:', url);
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                categories = data.categories || [];
+                tables = data.tables || {};
+                
+                // Flatten variables into searchable array
+                allVariables = [];
+                const variablesData = data.variables || {};
+                
+                for (const tableCode in variablesData) {
+                    const tableVars = variablesData[tableCode];
+                    let tableLabel = tableCode;
+                    let tableCategory = '';
+                    
+                    for (const cat in tables) {
+                        const tableList = tables[cat];
+                        const found = tableList.find(t => t.code === tableCode);
+                        if (found) {
+                            tableLabel = found.label;
+                            tableCategory = cat;
+                            break;
+                        }
+                    }
+                    
+                    tableVars.forEach(v => {
+                        allVariables.push({
+                            code: v.code,
+                            label: v.label,
+                            table: tableCode,
+                            tableLabel: tableLabel,
+                            category: tableCategory
+                        });
+                    });
+                }
+                
+                // Populate category dropdown
+                const categorySelect = document.getElementById('category');
+                categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    categorySelect.appendChild(option);
+                });
+                
+                // Initial display
+                filterResults();
+                
+            } catch (error) {
+                console.error('Error loading lookup file:', error);
+                
+                let errorMessage = `
+                    <tr><td colspan="5" class="no-results">
+                        <strong>Could not load variable data.</strong><br><br>
+                        <code>${error.message}</code><br><br>`;
+                
+                if (CONFIG.mode === 'local') {
+                    errorMessage += `
+                        <strong>Local mode tips:</strong><br>
+                        • Make sure <code>lookups/${CONFIG.lookupFile}</code> exists<br>
+                        • If opening directly in browser, try using a local web server<br>
+                        • Or switch to hosted mode in the CONFIG section`;
+                } else {
+                    errorMessage += `
+                        <strong>Hosted mode tips:</strong><br>
+                        • Check that the hostedPath URL is correct in CONFIG<br>
+                        • For Dropbox, use <code>dl.dropboxusercontent.com</code> links<br>
+                        • Make sure the file is publicly accessible`;
+                }
+                
+                errorMessage += `</td></tr>`;
+                
+                document.getElementById('results-body').innerHTML = errorMessage;
+                document.getElementById('results-count').textContent = 'Error loading data';
+            }
+        }
+        
+        // Update table dropdown based on category
+        function updateTables() {
+            const category = document.getElementById('category').value;
+            const tableSelect = document.getElementById('table');
+            
+            tableSelect.innerHTML = '<option value="">All Tables</option>';
+            
+            if (category && tables[category]) {
+                tables[category].forEach(t => {
+                    const option = document.createElement('option');
+                    option.value = t.code;
+                    option.textContent = `${t.code} - ${t.label.substring(0, 50)}${t.label.length > 50 ? '...' : ''}`;
+                    tableSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Filter and display results
+        function filterResults() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const category = document.getElementById('category').value;
+            const table = document.getElementById('table').value;
+            
+            let filtered = allVariables;
+            
+            if (category) {
+                filtered = filtered.filter(v => v.category === category);
+            }
+            
+            if (table) {
+                filtered = filtered.filter(v => v.table === table);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(v => 
+                    v.code.toLowerCase().includes(searchTerm) ||
+                    v.label.toLowerCase().includes(searchTerm) ||
+                    v.table.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            const displayLimit = 500;
+            const limited = filtered.slice(0, displayLimit);
+            
+            const countText = filtered.length > displayLimit 
+                ? `Showing ${displayLimit} of ${filtered.length} variables (refine search to see more)`
+                : `Showing ${filtered.length} variables`;
+            document.getElementById('results-count').textContent = countText;
+            
+            const tbody = document.getElementById('results-body');
+            
+            if (limited.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="no-results">No variables found. Try different search terms.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = limited.map(v => `
+                <tr>
+                    <td><span class="var-code">${v.code}</span></td>
+                    <td>${v.table}</td>
+                    <td>${v.label}</td>
+                    <td><span class="category-badge">${v.category || 'Other'}</span></td>
+                    <td><button class="copy-btn" onclick="copyCode('${v.code}')">Copy</button></td>
+                </tr>
+            `).join('');
+        }
+        
+        // Copy variable code to clipboard
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                event.target.textContent = '✓';
+                setTimeout(() => { event.target.textContent = 'Copy'; }, 1000);
+            });
+        }
+        
+        // Event listeners
+        document.getElementById('search').addEventListener('input', filterResults);
+        document.getElementById('category').addEventListener('change', () => {
+            updateTables();
+            filterResults();
+        });
+        document.getElementById('table').addEventListener('change', filterResults);
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

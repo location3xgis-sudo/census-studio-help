@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Census Studio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 { font-size: 2rem; }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover { background: rgba(255,255,255,0.1); }
+        
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #1a5276;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8f4f8;
+        }
+        
+        h2:first-child { margin-top: 0; }
+        
+        h3 {
+            color: #2980b9;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+        
+        p { margin-bottom: 1rem; }
+        
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #2980b9;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .step-number {
+            background: #2980b9;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        code {
+            background: #e8f4f8;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+        
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .tip {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .requirements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .req-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .req-item h4 {
+            color: #1a5276;
+            margin-bottom: 0.5rem;
+        }
+        
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        li { margin-bottom: 0.5rem; }
+        
+        a { color: #2980b9; }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Getting Started with Census Studio</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="tools.html">Tool Reference</a></li>
+            <li><a href="census-guide.html">Census Data Guide</a></li>
+            <li><a href="variable-lookup.html">Variable Lookup</a></li>
+            <li><a href="tutorials.html">Tutorials</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <div class="content">
+            <h2>System Requirements</h2>
+            
+            <div class="requirements">
+                <div class="req-item">
+                    <h4>ArcGIS Pro</h4>
+                    <p>Version 3.0 or later</p>
+                </div>
+                <div class="req-item">
+                    <h4>R Statistical Software</h4>
+                    <p>Version 4.0 or later</p>
+                </div>
+                <div class="req-item">
+                    <h4>Census API Key</h4>
+                    <p>Free from census.gov</p>
+                </div>
+            </div>
+            
+            <h2>Installation</h2>
+            
+            <h3>Step 1: Install R</h3>
+            <div class="step">
+                <p><span class="step-number">1</span> Download R from <a href="https://cran.r-project.org/bin/windows/base/" target="_blank">https://cran.r-project.org</a></p>
+                <p>Install to the default location: <code>C:\Program Files\R\R-4.x.x</code></p>
+            </div>
+            
+            <h3>Step 2: Install Required R Packages</h3>
+            <div class="step">
+                <p><span class="step-number">2</span> Open R or RStudio and run:</p>
+                <pre><code>install.packages(c("tidycensus", "sf", "dplyr", "spdep", "jsonlite", "openxlsx"))</code></pre>
+            </div>
+            
+            <div class="tip">
+                <strong>Tip:</strong> The <code>openxlsx</code> package is optional but recommended for Excel report output.
+            </div>
+            
+            <h3>Step 3: Get a Census API Key</h3>
+            <div class="step">
+                <p><span class="step-number">3</span> Request a free API key at <a href="https://api.census.gov/data/key_signup.html" target="_blank">https://api.census.gov/data/key_signup.html</a></p>
+                <p>The key will be emailed to you within minutes.</p>
+            </div>
+            
+            <h3>Step 4: Add the Toolbox to ArcGIS Pro</h3>
+            <div class="step">
+                <p><span class="step-number">4</span> In ArcGIS Pro:</p>
+                <ol>
+                    <li>Open the Catalog pane</li>
+                    <li>Right-click <strong>Toolboxes</strong> → <strong>Add Toolbox</strong></li>
+                    <li>Browse to <code>Census_Studio.pyt</code></li>
+                </ol>
+            </div>
+            
+            <h3>Step 5: Configure Your API Key</h3>
+            <div class="step">
+                <p><span class="step-number">5</span> Run the <strong>Set Census API Key</strong> tool:</p>
+                <ol>
+                    <li>Expand Census Studio → Configuration</li>
+                    <li>Double-click <strong>Set Census API Key</strong></li>
+                    <li>Paste your API key and click Run</li>
+                </ol>
+                <p>This stores the key permanently—you only need to do this once.</p>
+            </div>
+            
+            <h2>Your First Download</h2>
+            
+            <p>Let's download median household income by Census tract for a county:</p>
+            
+            <div class="step">
+                <p><span class="step-number">1</span> Run <strong>Download ACS Census Data</strong></p>
+            </div>
+            
+            <div class="step">
+                <p><span class="step-number">2</span> Set the parameters:</p>
+                <ul>
+                    <li><strong>Year:</strong> 2023</li>
+                    <li><strong>Survey:</strong> acs5</li>
+                    <li><strong>Variables (manual entry):</strong> <code>B19013_001</code></li>
+                    <li><strong>Geography Level:</strong> tract</li>
+                    <li><strong>State:</strong> Your state (e.g., TX)</li>
+                    <li><strong>County:</strong> Your county (e.g., Travis)</li>
+                    <li><strong>Output:</strong> Choose a geodatabase location</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <p><span class="step-number">3</span> Click <strong>Run</strong></p>
+                <p>The tool will download tract boundaries and median household income data, creating a new feature class with the estimate and margin of error fields.</p>
+            </div>
+            
+            <div class="tip">
+                <strong>What you get:</strong>
+                <ul>
+                    <li><code>Median_HH_Income</code> — The income estimate</li>
+                    <li><code>Median_HH_Income_MOE</code> — The margin of error (90% confidence)</li>
+                </ul>
+            </div>
+            
+            <h2>Next Steps</h2>
+            
+            <ul>
+                <li><a href="variable-lookup.html">Browse available Census variables</a></li>
+                <li><a href="census-guide.html">Learn about ACS data and margins of error</a></li>
+                <li><a href="tutorials.html">Follow step-by-step tutorials</a></li>
+            </ul>
+            
+            <h2>Troubleshooting</h2>
+            
+            <h3>R is not found</h3>
+            <p>Census Studio looks for R in <code>C:\Program Files\R</code>. If you installed R elsewhere, the tools may not find it. Reinstall R to the default location.</p>
+            
+            <h3>Package not found errors</h3>
+            <p>If you see errors about missing R packages, open R and run:</p>
+            <pre><code>install.packages("package_name")</code></pre>
+            
+            <h3>API key errors</h3>
+            <p>Run the <strong>Set Census API Key</strong> tool again to ensure your key is stored correctly.</p>
+            
+            <div class="warning">
+                <strong>Note:</strong> Some tools may take a minute or more to run, especially when downloading data for large areas or many variables. The progress bar in ArcGIS Pro will show activity.
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Census Studio for ArcGIS Pro | <a href="index.html" style="color: #7fb3d5;">Back to Home</a></p>
+    </footer>
+</body>
+</html>

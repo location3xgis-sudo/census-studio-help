@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Reference - Census Studio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        header h1 { font-size: 2rem; }
+        nav {
+            background: #2c3e50;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        nav a:hover { background: rgba(255,255,255,0.1); }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .tool-nav {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .tool-nav h3 {
+            color: #1a5276;
+            margin-bottom: 1rem;
+        }
+        .tool-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+        .tool-nav a {
+            color: #2980b9;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        .tool-nav a:hover {
+            background: #e8f4f8;
+        }
+        .tool-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e8f4f8;
+        }
+        .tool-header h2 {
+            color: #1a5276;
+            margin: 0;
+        }
+        .tool-category {
+            background: #2980b9;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        .tool-description {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            color: #2980b9;
+            margin: 1.5rem 0 0.75rem 0;
+            font-size: 1.1rem;
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .param-table th {
+            background: #f8f9fa;
+            color: #1a5276;
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .param-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        .param-name {
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+        }
+        .param-type {
+            font-family: 'Consolas', monospace;
+            background: #e8f4f8;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: #1a5276;
+        }
+        .param-required {
+            color: #dc3545;
+            font-size: 0.8rem;
+        }
+        .param-optional {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+        .output-fields {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .output-fields code {
+            background: #fff;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+        .tip {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        code {
+            background: #e8f4f8;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+        }
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        footer a { color: #7fb3d5; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tool Reference</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="tools.html">Tool Reference</a></li>
+            <li><a href="census-guide.html">Census Data Guide</a></li>
+            <li><a href="variable-lookup.html">Variable Lookup</a></li>
+            <li><a href="tutorials.html">Tutorials</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <div class="tool-nav">
+            <h3>Jump to Tool</h3>
+            <div class="tool-nav-grid">
+                <a href="#download-acs">Download ACS Census Data</a>
+                <a href="#compare-time">Compare Time Periods</a>
+                <a href="#join-acs">Join ACS Data to Features</a>
+                <a href="#normalize">Normalize Data</a>
+                <a href="#moe-reliability">MOE Reliability Filter</a>
+                <a href="#demographic-profile">Demographic Profile Report</a>
+                <a href="#hot-spot">Hot Spot Analysis</a>
+                <a href="#generate-lookup">Generate Variable Lookup</a>
+                <a href="#set-api-key">Set Census API Key</a>
+            </div>
+        </div>
+
+        <!-- Download ACS Census Data -->
+        <div class="tool-section" id="download-acs">
+            <div class="tool-header">
+                <h2>Download ACS Census Data</h2>
+                <span class="tool-category">Census Data</span>
+            </div>
+            <p class="tool-description">Download American Community Survey data with geometry using the tidycensus R library. Creates a feature class with estimate and margin of error fields.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Year <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Integer</span></td>
+                    <td>ACS data year (e.g., 2023). ACS 5-Year available from 2009.</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Survey <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td><code>acs5</code> (5-Year, all geographies) or <code>acs1</code> (1-Year, 65K+ population areas only)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Category <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Filter variable browser by topic category</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Table <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Select a specific ACS table</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Variables <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">String (Multi)</span></td>
+                    <td>Select individual variables from the browser</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Manual Variables <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Enter variable codes directly, comma-separated (e.g., <code>B19013_001, B25077_001</code>)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Geography Level <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>tract, block group, county, state, place, zcta, etc.</td>
+                </tr>
+                <tr>
+                    <td class="param-name">State <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String (Multi)</span></td>
+                    <td>Two-letter state abbreviation(s)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">County <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>County name(s), comma-separated. Leave blank for entire state.</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Output Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Class</span></td>
+                    <td>Output location. Use geodatabase for full field names.</td>
+                </tr>
+            </table>
+            
+            <h3>Output Fields</h3>
+            <div class="output-fields">
+                <p>For each variable, two fields are created:</p>
+                <ul>
+                    <li><code>[Variable_Name]</code> — The estimate value</li>
+                    <li><code>[Variable_Name]_MOE</code> — The margin of error (90% confidence by default)</li>
+                </ul>
+            </div>
+            
+            <div class="tip">
+                <strong>Tip:</strong> Use the <a href="variable-lookup.html">Variable Lookup</a> to find variable codes, or enter them manually if you already know them.
+            </div>
+        </div>
+
+        <!-- Compare Time Periods -->
+        <div class="tool-section" id="compare-time">
+            <div class="tool-header">
+                <h2>Compare Time Periods</h2>
+                <span class="tool-category">Census Data</span>
+            </div>
+            <p class="tool-description">Compare a single ACS variable across two time periods with statistical significance testing. Handles cross-decade boundary changes using population-weighted interpolation.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Year 1 (Earlier) <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Integer</span></td>
+                    <td>The earlier year for comparison</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Year 2 (Later) <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Integer</span></td>
+                    <td>The later year for comparison</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Survey <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td><code>acs5</code> or <code>acs1</code></td>
+                </tr>
+                <tr>
+                    <td class="param-name">Variable <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Single variable code to compare (e.g., <code>B19013_001</code>)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Variable Type <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Count (summed during interpolation) or Rate/Median (averaged)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Geography Level <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>tract, block group, county, etc.</td>
+                </tr>
+                <tr>
+                    <td class="param-name">State <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String (Multi)</span></td>
+                    <td>State(s) to analyze</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Output Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Class</span></td>
+                    <td>Output location</td>
+                </tr>
+            </table>
+            
+            <h3>Output Fields</h3>
+            <div class="output-fields">
+                <ul>
+                    <li><code>Est_Y1</code>, <code>MOE_Y1</code> — Year 1 estimate and MOE</li>
+                    <li><code>Est_Y2</code>, <code>MOE_Y2</code> — Year 2 estimate and MOE</li>
+                    <li><code>Change</code> — Absolute change (Y2 - Y1)</li>
+                    <li><code>PctChange</code> — Percent change</li>
+                    <li><code>SigChange</code> — Significance: 1 (significant increase), -1 (significant decrease), 0 (not significant)</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <strong>Important:</strong> For ACS 5-Year estimates, use years at least 5 years apart to avoid overlapping data (e.g., 2018 and 2023, not 2020 and 2023).
+            </div>
+        </div>
+
+        <!-- Join ACS Data to Features -->
+        <div class="tool-section" id="join-acs">
+            <div class="tool-header">
+                <h2>Join ACS Data to Features</h2>
+                <span class="tool-category">Census Data</span>
+            </div>
+            <p class="tool-description">Assign Census demographics to your own polygon features (parcels, planning districts, custom boundaries) using spatial interpolation.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Input Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Class</span></td>
+                    <td>Your polygon features to join Census data to</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Variables <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Variable code(s) to join</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Variable Type <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Count or Rate/Median — affects aggregation method</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Census Geography <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>tract or block group — the Census level to join from</td>
+                </tr>
+                <tr>
+                    <td class="param-name">State <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String (Multi)</span></td>
+                    <td>State(s) covering your input features</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Join Method <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Area Weighted or Population Weighted</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Output Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Class</span></td>
+                    <td>Output location</td>
+                </tr>
+            </table>
+            
+            <div class="tip">
+                <strong>Tip:</strong> For small polygons like parcels, both join methods will assign the value from the Census unit containing the parcel centroid. Area/population weighting matters more for larger target polygons.
+            </div>
+        </div>
+
+        <!-- Normalize Data -->
+        <div class="tool-section" id="normalize">
+            <div class="tool-header">
+                <h2>Normalize Data</h2>
+                <span class="tool-category">Data Enrichment</span>
+            </div>
+            <p class="tool-description">Calculate percentages, per capita rates, or per-thousand rates from raw ACS counts. Properly propagates margins of error using Census Bureau formulas.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Input Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Layer</span></td>
+                    <td>Feature class with ACS data</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Numerator Field <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Field</span></td>
+                    <td>The count field to normalize (e.g., population with bachelor's degree)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Denominator Field <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Field</span></td>
+                    <td>The base/universe field (e.g., total population 25+)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Normalization Type <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Percentage (×100), Per 1,000, Per 10,000, Per 100,000, or Ratio</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Output Field Name <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Name for the new calculated field</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Numerator is Subset <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Boolean</span></td>
+                    <td>Check if numerator is a subset of denominator (affects MOE formula)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Calculate MOE <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">Boolean</span></td>
+                    <td>Calculate margin of error for the normalized value</td>
+                </tr>
+            </table>
+            
+            <h3>Output Fields</h3>
+            <div class="output-fields">
+                <ul>
+                    <li><code>[Output Field Name]</code> — The normalized value</li>
+                    <li><code>[Output Field Name]_MOE</code> — Margin of error (if Calculate MOE is checked)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MOE Reliability Filter -->
+        <div class="tool-section" id="moe-reliability">
+            <div class="tool-header">
+                <h2>MOE Reliability Filter</h2>
+                <span class="tool-category">Data Enrichment</span>
+            </div>
+            <p class="tool-description">Calculate Coefficient of Variation (CV) and classify estimates by statistical reliability. Optionally filter or flag unreliable records.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Input Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Layer</span></td>
+                    <td>Feature class with ACS estimate and MOE fields</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Estimate Field <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Field</span></td>
+                    <td>The estimate field to evaluate</td>
+                </tr>
+                <tr>
+                    <td class="param-name">MOE Field <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">Field</span></td>
+                    <td>Margin of error field (auto-detected if not specified)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">High Reliability Threshold <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Double</span></td>
+                    <td>CV below this = High reliability (default: 12%)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Low Reliability Threshold <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Double</span></td>
+                    <td>CV above this = Low reliability (default: 40%)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Action <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Flag only, Set to NULL, or Remove low reliability records</td>
+                </tr>
+            </table>
+            
+            <h3>Output Fields</h3>
+            <div class="output-fields">
+                <ul>
+                    <li><code>CV</code> — Coefficient of Variation (percentage)</li>
+                    <li><code>Reliability</code> — High, Medium, or Low</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Demographic Profile Report -->
+        <div class="tool-section" id="demographic-profile">
+            <div class="tool-header">
+                <h2>Demographic Profile Report</h2>
+                <span class="tool-category">Analysis</span>
+            </div>
+            <p class="tool-description">Generate a demographic profile comparing a study area to county, state, and national averages. Output to Excel, CSV, or HTML.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Study Area Features <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Layer</span></td>
+                    <td>Polygon layer defining study area. Uses selected features if any, otherwise all features.</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Indicators <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String (Multi)</span></td>
+                    <td>Select indicators to include (Total Population, Median Income, etc.)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Census Geography <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>tract or block group — level to aggregate from</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Year / Survey <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Integer / String</span></td>
+                    <td>ACS year and survey type</td>
+                </tr>
+                <tr>
+                    <td class="param-name">State <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>State containing the study area</td>
+                </tr>
+                <tr>
+                    <td class="param-name">County <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>County name (enables county comparison)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Compare to County/State/Nation <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">Boolean</span></td>
+                    <td>Select which comparison geographies to include</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Output Report <span class="param-required">Required</span></td>
+                    <td><span class="param-type">File</span></td>
+                    <td>Output file (.xlsx, .csv, or .html)</td>
+                </tr>
+            </table>
+            
+            <h3>Available Indicators</h3>
+            <div class="output-fields">
+                <p>Total Population, Median Age, Median Household Income, Per Capita Income, % Below Poverty, % Bachelor's Degree or Higher, % Unemployed, % Owner-Occupied Housing, % Renter-Occupied Housing, Median Home Value, Median Gross Rent, % No Health Insurance, % Foreign Born, % Age 65+, % Under 18</p>
+            </div>
+        </div>
+
+        <!-- Hot Spot Analysis -->
+        <div class="tool-section" id="hot-spot">
+            <div class="tool-header">
+                <h2>Hot Spot Analysis</h2>
+                <span class="tool-category">Analysis</span>
+            </div>
+            <p class="tool-description">Identify statistically significant spatial clusters (hot spots and cold spots) using Getis-Ord Gi* with optional MOE-aware significance adjustment.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Input Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Layer</span></td>
+                    <td>Feature class with values to analyze</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Analysis Field <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Field</span></td>
+                    <td>Numeric field to analyze for clustering</td>
+                </tr>
+                <tr>
+                    <td class="param-name">MOE Field <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">Field</span></td>
+                    <td>Margin of error field (for MOE adjustment)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Spatial Relationship <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>Contiguity, Distance band, or K nearest neighbors</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Distance Band <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">Double</span></td>
+                    <td>Distance threshold in meters (for distance band method)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Number of Neighbors <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">Integer</span></td>
+                    <td>K value for KNN method (default: 8)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Significance Level <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td>0.10, 0.05, or 0.01</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Apply MOE Adjustment <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">Boolean</span></td>
+                    <td>Adjust significance based on estimate reliability</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Output Feature Class <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Feature Class</span></td>
+                    <td>Output location</td>
+                </tr>
+            </table>
+            
+            <h3>Output Fields</h3>
+            <div class="output-fields">
+                <ul>
+                    <li><code>Gi_Zscore</code> — Getis-Ord Gi* z-score (positive = hot, negative = cold)</li>
+                    <li><code>Gi_Pvalue</code> — Statistical p-value</li>
+                    <li><code>Gi_Bin</code> — Classification (Hot Spot 99%/95%/90%, Cold Spot 99%/95%/90%, Not Significant)</li>
+                    <li><code>Gi_Bin_Adjusted</code> — MOE-adjusted classification (if MOE adjustment enabled)</li>
+                    <li><code>CV</code> — Coefficient of Variation (if MOE field provided)</li>
+                    <li><code>Reliability</code> — High/Medium/Low (if MOE field provided)</li>
+                </ul>
+            </div>
+            
+            <div class="tip">
+                <strong>MOE Adjustment:</strong> When enabled, features with Low reliability (CV > 40%) are marked as "Unreliable Estimate" regardless of Gi* result. Features with Medium reliability have 90% confidence results downgraded to "Not Significant."
+            </div>
+        </div>
+
+        <!-- Generate Variable Lookup -->
+        <div class="tool-section" id="generate-lookup">
+            <div class="tool-header">
+                <h2>Generate Variable Lookup File</h2>
+                <span class="tool-category">Configuration</span>
+            </div>
+            <p class="tool-description">Generate the JSON lookup file used by the variable browser in other tools. Run this once for each year/survey combination you need.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">ACS Year <span class="param-required">Required</span></td>
+                    <td><span class="param-type">Integer</span></td>
+                    <td>Year to generate lookup for (e.g., 2023)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Survey <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String</span></td>
+                    <td><code>acs5</code> or <code>acs1</code></td>
+                </tr>
+                <tr>
+                    <td class="param-name">Output JSON File <span class="param-optional">Optional</span></td>
+                    <td><span class="param-type">File</span></td>
+                    <td>Output location. Defaults to <code>lookups/acs_variable_lookup_[year]_[survey].json</code></td>
+                </tr>
+            </table>
+            
+            <div class="tip">
+                <strong>Note:</strong> This tool takes 1-2 minutes to run as it queries the Census API for all available variables.
+            </div>
+        </div>
+
+        <!-- Set Census API Key -->
+        <div class="tool-section" id="set-api-key">
+            <div class="tool-header">
+                <h2>Set Census API Key</h2>
+                <span class="tool-category">Configuration</span>
+            </div>
+            <p class="tool-description">Store your Census API key permanently in R's environment file. You only need to run this once.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Census API Key <span class="param-required">Required</span></td>
+                    <td><span class="param-type">String (Hidden)</span></td>
+                    <td>Your Census API key (40 characters)</td>
+                </tr>
+            </table>
+            
+            <h3>Getting an API Key</h3>
+            <p>Request a free API key at <a href="https://api.census.gov/data/key_signup.html" target="_blank">https://api.census.gov/data/key_signup.html</a>. The key is emailed to you within minutes.</p>
+            
+            <div class="tip">
+                <strong>Storage:</strong> The key is saved in your R <code>.Renviron</code> file and automatically loaded each time R starts. You don't need to enter it again.
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Census Studio for ArcGIS Pro | <a href="index.html">Back to Home</a></p>
+    </footer>
+</body>
+</html>
