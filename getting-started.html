@@ -162,6 +162,25 @@
         
         a { color: #2980b9; }
         
+        .data-sources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        
+        .source-item {
+            background: #e8f4f8;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            border-left: 3px solid #2980b9;
+            font-size: 0.95rem;
+        }
+        
+        .source-item strong {
+            color: #1a5276;
+        }
+        
         footer {
             background: #2c3e50;
             color: white;
@@ -189,6 +208,18 @@
     
     <main>
         <div class="content">
+            <h2>What Census Studio Supports</h2>
+            
+            <p>Census Studio connects ArcGIS Pro to multiple U.S. Census Bureau data programs through R, giving you access to a wide range of demographic, economic, and workforce data:</p>
+            
+            <div class="data-sources">
+                <div class="source-item"><strong>ACS</strong> — American Community Survey (1-Year &amp; 5-Year)</div>
+                <div class="source-item"><strong>Decennial</strong> — 2000, 2010, 2020 Census</div>
+                <div class="source-item"><strong>PEP</strong> — Population Estimates Program</div>
+                <div class="source-item"><strong>Migration</strong> — ACS Migration Flows</div>
+                <div class="source-item"><strong>LEHD</strong> — LODES Workforce Data</div>
+            </div>
+            
             <h2>System Requirements</h2>
             
             <div class="requirements">
@@ -217,17 +248,28 @@
             <h3>Step 2: Install Required R Packages</h3>
             <div class="step">
                 <p><span class="step-number">2</span> Open R or RStudio and run:</p>
-                <pre><code>install.packages(c("tidycensus", "sf", "dplyr", "spdep", "jsonlite", "openxlsx"))</code></pre>
+                <pre><code>install.packages(c("tidycensus", "lehdr", "sf", "dplyr", "spdep", "jsonlite", "openxlsx"))</code></pre>
             </div>
             
             <div class="tip">
-                <strong>Tip:</strong> The <code>openxlsx</code> package is optional but recommended for Excel report output.
+                <strong>Package purposes:</strong>
+                <ul>
+                    <li><code>tidycensus</code> — ACS, Decennial, Population Estimates, and Migration Flows data</li>
+                    <li><code>lehdr</code> — LEHD LODES workforce and commuting data</li>
+                    <li><code>sf</code> — Spatial data handling and geometry</li>
+                    <li><code>spdep</code> — Spatial analysis (hot spot tools)</li>
+                    <li><code>openxlsx</code> — Optional, for Excel report output</li>
+                </ul>
             </div>
             
             <h3>Step 3: Get a Census API Key</h3>
             <div class="step">
                 <p><span class="step-number">3</span> Request a free API key at <a href="https://api.census.gov/data/key_signup.html" target="_blank">https://api.census.gov/data/key_signup.html</a></p>
                 <p>The key will be emailed to you within minutes.</p>
+            </div>
+            
+            <div class="tip">
+                <strong>Note:</strong> The Census API key is required for ACS, Decennial, Population Estimates, and Migration Flows tools. The LEHD tools download data directly and do not require an API key.
             </div>
             
             <h3>Step 4: Add the Toolbox to ArcGIS Pro</h3>
@@ -262,7 +304,7 @@
             <div class="step">
                 <p><span class="step-number">2</span> Set the parameters:</p>
                 <ul>
-                    <li><strong>Year:</strong> 2023</li>
+                    <li><strong>Year:</strong> 2024</li>
                     <li><strong>Survey:</strong> acs5</li>
                     <li><strong>Variables (manual entry):</strong> <code>B19013_001</code></li>
                     <li><strong>Geography Level:</strong> tract</li>
@@ -288,8 +330,8 @@
             <h2>Next Steps</h2>
             
             <ul>
-                <li><a href="variable-lookup.html">Browse available Census variables</a></li>
-                <li><a href="census-guide.html">Learn about ACS data and margins of error</a></li>
+                <li><a href="variable-lookup.html">Browse available ACS variables</a></li>
+                <li><a href="census-guide.html">Learn about Census data sources, ACS margins of error, and more</a></li>
                 <li><a href="tutorials.html">Follow step-by-step tutorials</a></li>
             </ul>
             
@@ -301,9 +343,10 @@
             <h3>Package not found errors</h3>
             <p>If you see errors about missing R packages, open R and run:</p>
             <pre><code>install.packages("package_name")</code></pre>
+            <p>The two most important packages are <code>tidycensus</code> (for ACS, Decennial, PEP, and Migration tools) and <code>lehdr</code> (for LEHD tools). Make sure both are installed.</p>
             
             <h3>API key errors</h3>
-            <p>Run the <strong>Set Census API Key</strong> tool again to ensure your key is stored correctly.</p>
+            <p>Run the <strong>Set Census API Key</strong> tool again to ensure your key is stored correctly. Note that LEHD tools do not require an API key.</p>
             
             <div class="warning">
                 <strong>Note:</strong> Some tools may take a minute or more to run, especially when downloading data for large areas or many variables. The progress bar in ArcGIS Pro will show activity.
