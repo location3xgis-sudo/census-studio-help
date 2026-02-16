@@ -139,6 +139,16 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .tool-list-header {
+            background: #e8f4f8;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            color: #1a5276;
+            border-bottom: 2px solid #d0e8f0;
+            font-size: 0.95rem;
         }
         
         .tool-item {
@@ -171,7 +181,7 @@
         .tool-name {
             font-weight: 600;
             color: #333;
-            min-width: 200px;
+            min-width: 240px;
         }
         
         .tool-name a {
@@ -186,6 +196,17 @@
         .tool-desc {
             color: #666;
             font-size: 0.9rem;
+        }
+
+        .new-badge {
+            background: #28a745;
+            color: white;
+            padding: 0.1rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            vertical-align: middle;
         }
         
         footer {
@@ -222,7 +243,7 @@
 <body>
     <header>
         <h1>Census Studio</h1>
-        <p>ArcGIS Pro Toolbox for American Community Survey Data</p>
+        <p>ArcGIS Pro Toolbox for U.S. Census Bureau Data</p>
     </header>
     
     <nav>
@@ -239,81 +260,129 @@
     <main>
         <div class="hero">
             <h2>Welcome to Census Studio</h2>
-            <p>Census Studio is a comprehensive ArcGIS Pro toolbox that simplifies working with American Community Survey (ACS) data. Download Census data, join it to your own features, analyze patterns, and create professional reports—all within ArcGIS Pro.</p>
+            <p>Census Studio is a comprehensive ArcGIS Pro toolbox for working with U.S. Census Bureau data. Download ACS, Decennial Census, Population Estimates, Migration Flows, and LEHD employment data directly into feature classes. Join demographics to your own boundaries, analyze spatial patterns, aggregate across geographies, and create professional reports&mdash;all within ArcGIS Pro with proper statistical rigor built in.</p>
         </div>
         
         <h2 class="section-title">Quick Links</h2>
         <div class="card-grid">
             <div class="card">
-                <h3>🚀 Getting Started</h3>
+                <h3>&#x1F680; Getting Started</h3>
                 <p>Install R, configure your Census API key, and run your first download in minutes.</p>
-                <a href="getting-started.html">Setup Guide →</a>
+                <a href="getting-started.html">Setup Guide &rarr;</a>
             </div>
             
             <div class="card">
-                <h3>🔍 Variable Lookup</h3>
+                <h3>&#x1F50D; Variable Lookup</h3>
                 <p>Search thousands of ACS variables by keyword or browse by topic to find exactly what you need.</p>
-                <a href="variable-lookup.html">Search Variables →</a>
+                <a href="variable-lookup.html">Search Variables &rarr;</a>
             </div>
             
             <div class="card">
-                <h3>📊 Census Data Guide</h3>
+                <h3>&#x1F4CA; Census Data Guide</h3>
                 <p>Learn about ACS tables, margins of error, geography levels, and best practices.</p>
-                <a href="census-guide.html">Learn More →</a>
+                <a href="census-guide.html">Learn More &rarr;</a>
             </div>
             
             <div class="card">
-                <h3>📖 Tutorials</h3>
+                <h3>&#x1F4D6; Tutorials</h3>
                 <p>Step-by-step workflows for common tasks like demographic profiles and hot spot analysis.</p>
-                <a href="tutorials.html">View Tutorials →</a>
+                <a href="tutorials.html">View Tutorials &rarr;</a>
             </div>
         </div>
         
-        <h2 class="section-title">Tools Overview</h2>
+        <h2 class="section-title">Tools Overview (15 Tools)</h2>
+
+        <!-- Census Data Tools -->
         <div class="tool-list">
+            <div class="tool-list-header">Census Data (7 tools)</div>
             <div class="tool-item">
                 <span class="tool-category">Census Data</span>
-                <span class="tool-name"><a href="tools/download-acs-data.html">Download ACS Census Data</a></span>
+                <span class="tool-name"><a href="tools.html#download-acs">Download ACS Census Data</a></span>
                 <span class="tool-desc">Download ACS data with geometry using the tidycensus R library</span>
             </div>
             <div class="tool-item">
                 <span class="tool-category">Census Data</span>
-                <span class="tool-name"><a href="tools/compare-time-periods.html">Compare Time Periods</a></span>
+                <span class="tool-name"><a href="tools.html#download-decennial">Download Decennial Census Data</a><span class="new-badge">NEW</span></span>
+                <span class="tool-desc">Download 2000, 2010, 2020 Decennial Census data including block-level geography</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools.html#download-pop-estimates">Download Population Estimates</a><span class="new-badge">NEW</span></span>
+                <span class="tool-desc">Download Census Population Estimates Program (PEP) data with demographic breakdowns</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools.html#download-migration">Download Migration Flows</a><span class="new-badge">NEW</span></span>
+                <span class="tool-desc">Download ACS county-to-county migration flow data with destination mapping</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools.html#download-lehd-jobs">Download LEHD Jobs</a><span class="new-badge">NEW</span></span>
+                <span class="tool-desc">Download LEHD LODES job counts by residence or workplace location</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools.html#download-lehd-commute">Download LEHD Commute Flows</a><span class="new-badge">NEW</span></span>
+                <span class="tool-desc">Download LEHD LODES origin-destination commuting data</span>
+            </div>
+            <div class="tool-item">
+                <span class="tool-category">Census Data</span>
+                <span class="tool-name"><a href="tools.html#compare-time">Compare Time Periods</a></span>
                 <span class="tool-desc">Compare a variable across two years with statistical significance testing</span>
             </div>
             <div class="tool-item">
                 <span class="tool-category">Census Data</span>
-                <span class="tool-name"><a href="tools/join-acs-data.html">Join ACS Data to Features</a></span>
+                <span class="tool-name"><a href="tools.html#join-acs">Join ACS Data to Features</a></span>
                 <span class="tool-desc">Assign Census demographics to your own polygon features</span>
             </div>
+        </div>
+
+        <!-- Data Enrichment Tools -->
+        <div class="tool-list">
+            <div class="tool-list-header">Data Enrichment (3 tools)</div>
             <div class="tool-item">
                 <span class="tool-category">Data Enrichment</span>
-                <span class="tool-name"><a href="tools/normalize-data.html">Normalize Data</a></span>
+                <span class="tool-name"><a href="tools.html#normalize">Normalize Data</a></span>
                 <span class="tool-desc">Calculate percentages, per capita rates, with proper MOE propagation</span>
             </div>
             <div class="tool-item">
                 <span class="tool-category">Data Enrichment</span>
-                <span class="tool-name"><a href="tools/moe-reliability.html">MOE Reliability Filter</a></span>
+                <span class="tool-name"><a href="tools.html#moe-reliability">MOE Reliability Filter</a></span>
                 <span class="tool-desc">Calculate coefficient of variation and flag unreliable estimates</span>
             </div>
             <div class="tool-item">
+                <span class="tool-category">Data Enrichment</span>
+                <span class="tool-name"><a href="tools.html#aggregate-data">Aggregate Data</a><span class="new-badge">NEW</span></span>
+                <span class="tool-desc">Aggregate data from source polygons to target zones with MOE propagation</span>
+            </div>
+        </div>
+
+        <!-- Analysis Tools -->
+        <div class="tool-list">
+            <div class="tool-list-header">Analysis (2 tools)</div>
+            <div class="tool-item">
                 <span class="tool-category">Analysis</span>
-                <span class="tool-name"><a href="tools/demographic-profile.html">Demographic Profile Report</a></span>
+                <span class="tool-name"><a href="tools.html#demographic-profile">Demographic Profile Report</a></span>
                 <span class="tool-desc">Compare a study area to county, state, and national averages</span>
             </div>
             <div class="tool-item">
                 <span class="tool-category">Analysis</span>
-                <span class="tool-name"><a href="tools/hot-spot-analysis.html">Hot Spot Analysis</a></span>
+                <span class="tool-name"><a href="tools.html#hot-spot">Hot Spot Analysis</a></span>
                 <span class="tool-desc">Identify statistically significant clusters with MOE adjustment</span>
             </div>
+        </div>
+
+        <!-- Configuration Tools -->
+        <div class="tool-list">
+            <div class="tool-list-header">Configuration (2 tools)</div>
             <div class="tool-item">
                 <span class="tool-category">Configuration</span>
-                <span class="tool-name"><a href="tools/generate-lookup.html">Generate Variable Lookup</a></span>
+                <span class="tool-name"><a href="tools.html#generate-lookup">Generate Variable Lookup</a></span>
                 <span class="tool-desc">Build the JSON lookup file for the variable browser</span>
             </div>
             <div class="tool-item">
                 <span class="tool-category">Configuration</span>
-                <span class="tool-name"><a href="tools/set-api-key.html">Set Census API Key</a></span>
+                <span class="tool-name"><a href="tools.html#set-api-key">Set Census API Key</a></span>
                 <span class="tool-desc">Store your Census API key for automatic use</span>
             </div>
         </div>
@@ -321,7 +390,7 @@
     
     <footer>
         <p>Census Studio for ArcGIS Pro</p>
-        <p>Developed by <a href="#">Geospatial Training Services</a></p>
+        <p>Developed by <a href="https://location3x.com">Location3x</a> | <a href="https://geospatialtraining.com">Geospatial Training Services</a></p>
     </footer>
 </body>
 </html>
